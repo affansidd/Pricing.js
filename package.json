@@ -1,0 +1,23 @@
+{
+  "name": "libary",
+  "version": "1.0.0",
+  "description": "csc309 alpha release ",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/csc309-fall-2021/js-library-siddi858.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/csc309-fall-2021/js-library-siddi858/issues"
+  },
+  "homepage": "https://github.com/csc309-fall-2021/js-library-siddi858#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

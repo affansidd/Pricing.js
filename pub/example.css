@@ -1,0 +1,63 @@
+body {
+    font-family: verdana, tahoma;
+    background-color: #c8e2cf;
+}
+
+h1 {
+	text-align: center;
+}
+
+.page_container {
+    display: flex;
+	justify-content: flex-end;
+    flex-direction: column;
+    align-items: center;
+    
+}
+.page_container h1 {
+    color: #C70039;
+}
+
+#tree_ctn {
+    display: flex;
+    flex-direction: column;
+    width: 1000px;
+    align-self: center;
+}
+
+.example_ctn {
+    display: flex;
+    flex-direction: column;
+    width: 1000px;
+    /* align-self: center; */
+    align-items: center;
+}
+
+.button {
+    align-self: flex-end;
+    background-color: rgb(13, 87, 29);;
+    border: none;
+    color: white;
+    padding: 10px;
+    width: 300px;
+    height: 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    margin: 7px;
+    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 5px;
+}
+
+#api {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+#home {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}

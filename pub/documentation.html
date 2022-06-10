@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="documentation.css">
+    <title>Pricing.js Documentation</title>
+</head>
+
+<body>
+    <div class = 'header'>
+        <h1 class='title'>Pricing.js API Documentation</h1>
+        <a href='./examples.html' class='button' id = 'example'>Examples</a>
+        <a href='./index.html' class='button' id = 'home'>Home</a>
+    </div>
+    <div class="page_ctn">
+        
+        <h4>Welcome to the official API documentation for the Pricing.js library. Here you will find information about how to get set-up 
+            with the library and details about all the functionality that the library provides.</h4>
+        <div class = 'section'>
+            <h2>Getting Started:</h2>
+            <p>
+                To get started with the Pricing.js library, first download the libary code from <a href = 'https://github.com/csc309-fall-2021/js-library-siddi858/tree/main/pub'>here</a>.
+                Ensure the icons folder is in the same directory as the js folder.
+                <br>Next, include the following tags in your html file to include library functionality in your web app: 
+                <br>
+                <br>
+                <code>
+                    &ltscript type="text/javascript" src=".../pub/js/pricing.js">&lt/script&gt 
+                    <br>
+                    <br>
+                    &ltlink rel="stylesheet" type="text/css" href=".../pub/pricing.css">
+                </code>
+            </p>
+            <p>Once the pricing.js and pricing.css files have been linked, you're ready to start using the Pricing.js library to create 
+                unique and intuitive pricing matrices to display your products and/or services!
+            </p>
+            <p>
+                The following code snippet demonstrates how to create a pyramid pricing matrix to represent a tiered service structure. First create a JS object that
+                represents the product information, according to the specifications of the type of matrix you wish to creatte. Then use the constructor for the type of 
+                matrix you want to build to create an instance of a generator. Finally, use the generators make function to create the object and add it to a container of your choice.
+            </p>
+            <div class="code">
+                <pre>
+                    <code>
+            
+    //create an object that represents the product information (more details about the requirements for each type of matrix can be found below)
+
+    const subscriptionPyramid = [
+        {
+            value: "Prestige",
+            text: "Price: $30. Our most prestige package offers unlimited usage and our top speeds that will never slow down",
+            color: '#d766ed'
+        }, 
+        {
+            value: "Intermediate: $25",
+            text: "The intermediate package offers 500GB monthly usage of high speed internet. (Speed may slow down during peak times)",
+            color: '#eda166'
+        }, 
+        {
+            value: "Basic: $15",
+            text: "The basic package offers 100GB monthly usage of moderate speed internet. This package is suitable for those with minimal internet needs.",
+            color: '#DAF7A6'
+        }
+    ]
+
+    const container = document.querySelector('body')
+
+    const pyramidGenerator = new PyramidGenerator()
+    const pyramidNum = pyramidGenerator.makePyramid(subscriptionPyramid, container)
+                    </code>
+                </pre>
+            </div>
+            <p>
+                The same process applies for each of the different types of matrices the library can create. Simply create an object according to the specifications of the 
+                type of matrix you want to create (which can be found below), create (if you haven't already) an object using the constructor of the desired matrix and use the 
+                the make function to generate the pricing matrix.
+            </p>
+            
+        </div>
+        <div class="section">
+            <h2>Matrix Generators:</h2>
+            <p>
+                Every Generator object has two attributes, an array that stores an object representing each matrix that this generator has been used to create and the number of matrices 
+                this generator has created. Each object in the array is kept up to date with any dynamic changes that are made to a matrix using the API functions of a generator. A developer 
+                can access this array at any time to see which trees have been created and the current state of a matrix via the <code>info</code> field of each object. 
+            </p>
+        </div>
+        <div class="section">
+            <h2>Tree Generator:</h2>
+
+            <h3>Constructor: </h3>
+            <p>Create an instance of the TreeGenerator using the <code>TreeGenerator()</code> constructor.</p>
+            
+            <h3>Required Object Specifications:</h3>
+            <p>
+                The TreeGenerator's <code>makeTree</code> function takes a JS object as an argument that stores the data you wish to represent with a tree.
+                This object must follow a specific format illustrated in the example below. The object is recursive in nature to match the recursive structure of a tree.
+
+            </p>
+            <h4>
+                Object Structure:
+            </h4>
+            <div class="code">
+                <pre>
+                    <code>
+        {
+            value: '' // A string representing the text to appear inside a node,
+            text: '' // A string representing the text to appear in a pop-up when a user hovers over this node (optional),
+            color: '' // A string representing a valid CSS color value (hexcode, rgb, rgba) (optional, if blank a default color will be used),
+            children: [] // An array of objects that follow the same structure that represents this node's child nodes. If empty, then this node is 
+                            a leaf.
+
+        }
+                    </code>
+                </pre>
+            </div>
+            <h4>
+                Example:
+            </h4>
+
+            <div class="code">
+                <pre class="language-js">
+                    <code class="language-js">
+        {
+            value: 'All-Inclusive: $20',
+            text: "Our all-inclusive package includes all of the types of items including Meat/Gravy, BBQ, Veggie, and Dessert! Ideal for 50+ guests.",
+            children: [
+                {
+                    value: 'Completely Meat: $15',
+                    text: "The Completely Meat package combines the Meat and gravy with BBQ to offer the best of both worlds!",
+                    color: "#C85C5C",
+                    children: [
+                        {
+                            value: 'Meat/Gravy: $10',
+                            text: "This package offers a variety of our meat products with gravy",
+                            color: "#FFB344",
+                            children: []
+                        },
+                        {
+                            value: 'BBQ: $10',
+                            text: "This package offers a variety of our BBQ products",
+                            color: "#e5b502",
+                            children: []
+                        }
+                    ]
+                },
+                {
+                    value: 'Veggie + Dessert: $12',
+                    text: "The Veggie + Dessert package combines the Veggie package with our delicious deserts for a healthy and sweet combination",
+                    color: "#FAF2DA",
+                    children: [
+                        {
+                            value: 'Veggie: $7',
+                            text: "This package offers our Veggie dishes made from freshly picked veggies!",
+                            color: "#9FE6A0",
+                            children: []
+                        },
+                        {
+                            value: 'Dessert: $5',
+                            text: "This package is perfect for special occasions and offers our most savoury and sweet dishes!",
+                            color: "#1CC5DC",
+                            children: []
+                        }
+                    ]
+                }
+            ]
+        }
+                    </code>
+                </pre>
+            </div>
+            <p>Note: It is expected that every <code>value</code> field in the created object is unique.</p>
+            <h3>API Functions:</h3>
+            <table>
+                <tr>
+                    <th>Function</th>
+                    <th>Arguments</th>
+                    <th>Return Value</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>makeTree(info, container)</code></td>
+                    <td>
+                        <code>info</code>: the JS object that stores the data to be represented by this tree.<br>
+                        <code>container</code>: a Node object to which this tree should be added (ex. div, span, body, etc)
+                    </td>
+                    <td>
+                        An integer representing the treeNumber of the newly created tree. <br>This number is used to dynamically change the tree with the rest of the API functions. 
+                    </td>
+                    <td>
+                        Create a new tree price matrix based on the contents of <code>info</code> and append to <code>container.childNodes</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>changeColor(treeNum, nodeValue, color)</code></td>
+                    <td>
+                        <code>treeNum</code>: the treeNumber of the tree to be updated.<br>
+                        <code>nodeValue</code>: the text that appears inside the node to be updated<br>
+                        <code>color</code>: a string representing a valid CSS color value (hexcode, rgb, rgba) (ex. rgb(0,0,0))
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Update the background color of the node with value <code>nodeValue</code> in tree <code>treeNum</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>addChild(treeNum, parentValue, newNode)</code></td>
+                    <td>
+                        <code>treeNum</code>: the treeNumber of the tree to be updated.<br>
+                        <code>parentValue</code>: the text that appears inside the node to which the child will be added<br>
+                        <code>newNode</code>: a JS object that follows the TreeGenerator object specifications, representing the data of the new node
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Append a new tree node representing the data in <code>newNode</code> to the node with value <code>parentValue</code> in tree <code>treeNum</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>deleteChild(treeNum, nodeValue)</code></td>
+                    <td>
+                        <code>treeNum</code>: the treeNumber of the tree to be updated.<br>
+                        <code>nodeValue</code>: the text that appears inside the node to delete<br>
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Delete the node with value <code>nodeValue</code> in tree <code>treeNum</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>changeNodeText(treeNum, oldNodeValue, newNodeValue)</code></td>
+                    <td>
+                        <code>treeNum</code>: the treeNumber of the tree to be updated.<br>
+                        <code>oldNodeValue</code>: the text that currently appears inside the node to update<br>
+                        <code>newNodeValue</code>: the new text to appear inside the node to update
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Update the text of the node with value <code>oldNode</code> to <code>newNodeValue</code> in tree <code>treeNum</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>changePopupText(treeNum, nodeValue, newPopupText)</code></td>
+                    <td>
+                        <code>treeNum</code>: the treeNumber of the tree to be updated.<br>
+                        <code>nodeValue</code>: the text that appears inside the node to update<br>
+                        <code>newPopupText</code>: the new text to appear inside the pop-up of the node
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Update the pop-up text of the node with value <code>nodeValue</code> to <code>newPopupText</code> in tree <code>treeNum</code>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="section">
+            <h2>Pyramid Generator:</h2>
+
+            <h3>Constructor: </h3>
+            <p>Create an instance of the PyramidGenerator using the <code>PyramidGenerator()</code> constructor.</p>
+            
+            <h3>Required Object Specifications:</h3>
+            <p>
+                The PyramidGenerator's <code>createPyramid</code> function takes an array of objects as an argument. Each object in the array represents a section of 
+                the pyramid. The object at index 0 represents the top of the pyramid and the object at index array.length() - 1 represents the base of the pyramid.
+                The object format is defined below:
+            </p>
+            <h4>Object Structure:</h4>
+            <div class="code">
+                <pre>
+                    <code>
+        {
+            value: '' // A string representing the text to appear inside a section of the pyramid,
+            text: '' // A string representing the text to appear in a pop-up when a user hovers over this section (optional),
+            color: '' // A string representing a valid CSS color value (hexcode, rgb, rgba) (optional, if blank a default color will be used),
+        }
+                    </code>
+                </pre>
+            </div>
+            <h4>Example:</h4>
+            <div class="code">
+                <pre>
+                    <code>
+        [
+            {
+                value: "Prestige",
+                text: "Price: $30. Our most prestige package offers unlimited usage and our top speeds that will never slow down",
+                color: '#d766ed'
+            }, 
+            {
+                value: "Intermediate: $25",
+                text: "The intermediate package offers 500GB monthly usage of high speed internet. (Speed may slow down during peak times)",
+                color: '#eda166'
+            }, 
+            {
+                value: "Basic: $15",
+                text: "The basic package offers 100GB monthly usage of moderate speed internet. This package is suitable for those with minimal internet needs.",
+                color: '#DAF7A6'
+            }
+        ]
+                    </code>
+                </pre>
+            </div>
+            <h3>API Functions:</h3>
+            <table>
+                <tr>
+                    <th>Function</th>
+                    <th>Arguments</th>
+                    <th>Return Value</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>makePyramid(info, container)</code></td>
+                    <td>
+                        <code>info</code>: the JS array of objects that store the data to be represented by this pyramid.<br>
+                        <code>container</code>: a Node object to which this tree should be added (ex. div, span, body, etc)
+                    </td>
+                    <td>
+                        An integer representing the pyramidNumber of the newly created pyramid. <br>This number is used to dynamically change the pyramid with the rest of the API functions. 
+                    </td>
+                    <td>
+                        Create a new pyrmaid price matrix based on the contents of <code>info</code> and append to <code>container.childNodes</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>addBase(pyramidNum, baseInfo)</code></td>
+                    <td>
+                        <code>pyramidNum</code>: the pyramidNumber of the pyramid to be updated.<br>
+                        <code>baseInfo</code>: a JS object that follows the PyramidGenerator object specifications, representing the data of the new base<br>
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Add a base containing the contents of <code>baseInfo</code> to pyramid <code>pyramidNum</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>removeBase(pyramidNum)</code></td>
+                    <td>
+                        <code>pyramidNum</code>: the pyramidNumber of the pyramid to be updated.<br>  
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Remove the base (bottom section) from pyramid <code>pyramidNum</code> 
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>changeSectionColor(pyramidNum, sectionIndex, color)</code></td>
+                    <td>
+                        <code>pyramidNum</code>: the pyramidNumber of the pyramid to be updated.<br>
+                        <code>sectionIndex</code>: the index of the section of the pyramid to be updated where <code>0</code> represents the top-most section <br>
+                        <code>color</code>: a string representing a valid CSS color value (hexcode, rgb, rgba) (ex. rgb(0,0,0))
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Change the color of section <code>sectionIndex</code> to <code>color</code> in pyramid <code>pyramidNum</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>changeSectionText(pyramidNum, sectionIndex, newSectionText)</code></td>
+                    <td>
+                        <code>pyramidNum</code>: the pyramidNumber of the pyramid to be updated.<br>
+                        <code>sectionIndex</code>: the index of the section of the pyramid to be updated where <code>0</code> represents the top-most section <br>
+                        <code>newSectionText</code>: the new text to appear inside the section to update
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Update the text of the section <code>sectionIndex</code> to <code>newSectionText</code> in pyramid <code>pyramidNum</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>changePopupText(pyramidNum, sectionIndex, newPopupText)</code></td>
+                    <td>
+                        <code>pyramidNum</code>: the pyramidNumber of the pyramid to be updated.<br>
+                        <code>sectionIndex</code>: the index of the section of the pyramid to be updated where <code>0</code> represents the top-most section <br>
+                        <code>newPopupText</code>: the new text to appear inside the pop-up of the section to be updated
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Update the pop-up text of section <code>sectionIndex</code> to <code>newPopupText</code> in pyramid <code>pyramidNum</code>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="section">
+            <h2>VennDiagram Generator:</h2>
+    
+            <h3>Constructor: </h3>
+            <p>Create an instance of the VennDiagramGenerator using the <code>VennDiagramGenerator()</code> constructor.</p>
+            
+            <h3>Required Object Specifications:</h3>
+            <p>
+                The VennDiagramGenerator's <code>makeVenn</code> function takes an array of 3 objects as an argument. Each object in the array represents a section of 
+                the Venn Diagram. The object at index 0 represents the left section of the Venn Diagram, the object at index 1 represents the middle section (where similarities are stored), 
+                and the object at index 2 represents the right section of the Venn Diagram.
+                The object format is defined below:
+            </p>
+            <h4>Object Structure:</h4>
+            <div class="code">
+                <pre>
+                    <code>
+        {
+            header: '' // A string representing the text to appear at the top of the Venn Diagram section,
+            details: '' || [] // Either a string or an array of strings representing the product details of this section.
+                                 If details is a string, a paragraph will be displayed in the section.
+                                 If details is an array of strings, a bulleted list will be displayed in the section.
+            color: '' // A string representing a valid CSS color value (hexcode, rgb, rgba) (optional, if blank a default color will be used),
+        }
+                    </code>
+                </pre>
+            </div>
+            <h4>Example:</h4>
+            <div class="code">
+                <pre>
+                    <code>
+        [
+            {
+                header: 'Product A: $30',
+                details: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. `
+            },
+            {
+                header: 'Similarities:',
+                details:  `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. `
+                color: '#C85C5C'
+            },
+            {
+                header: 'Product 2: $45',
+                details: ['Lorem', 'ipsum', 'Dolor']
+            }
+        ]
+                    </code>
+                </pre>
+            </div>
+            <h3>API Functions:</h3>
+            <table>
+                <tr>
+                    <th>Function</th>
+                    <th>Arguments</th>
+                    <th>Return Value</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>makeVenn(info, container)</code></td>
+                    <td>
+                        <code>info</code>: the JS array of objects that store the data to be represented by this VennDiagram.<br>
+                        <code>container</code>: a Node object to which this tree should be added (ex. div, span, body, etc)
+                    </td>
+                    <td>
+                        An integer representing the vennNumber of the newly created Venn Diagram. <br>This number is used to dynamically change the VennDiagram with the rest of the API functions. 
+                    </td>
+                    <td>
+                        Create a new Venn Diagram price matrix based on the contents of <code>info</code> and append to <code>container.childNodes</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>changeColor(vennNum, sectionIndex, newColor)</code></td>
+                    <td>
+                        <code>vennNum</code>: the vennNumber of the Venn Diagram to be updated.<br>
+                        <code>sectionIndex</code>: the index of the section of the Venn Diagram to be updated where <code>0</code> represents the left section <br>
+                        <code>newColor</code>: a string representing a valid CSS color value (hexcode, rgb, rgba) (ex. rgb(0,0,0))
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Change the color of section <code>sectionIndex</code> to <code>color</code> in Venn Diagram <code>vennNum</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>changeSectionHeader(vennNum, sectionIndex, newHeader)</code></td>
+                    <td>
+                        <code>vennNum</code>: the vennNumber of the Venn Diagram to be updated.<br>
+                        <code>sectionIndex</code>: the index of the section of the Venn Diagram to be updated where <code>0</code> represents the left section <br>
+                        <code>newHeader</code>: a string representing the new text to appear at the top of the section
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Update the header of section <code>sectionIndex</code> to <code>newHeader</code> in Venn Diagram <code>vennNum</code> 
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>changeSectionDetails(vennNum, sectionIndex, newDetails)</code></td>
+                    <td>
+                        <code>vennNum</code>: the vennNumber of the Venn Diagram to be updated.<br>
+                        <code>sectionIndex</code>: the index of the section of the Venn Diagram to be updated where <code>0</code> represents the left section <br>
+                        <code>newDetails</code>: Either a string or an array of strings representing the new text to appear inside the section to update. 
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Update the text of the section <code>sectionIndex</code> to <code>newDetails</code> in Venn Diagram <code>vennNum</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>changeVennSize(vennNum, dimensions)</code></td>
+                    <td>
+                        <code>vennNum</code>: the vennNumber of the Venn Diagram to be updated.<br>
+                        <code>dimensions</code>: an array of valid CSS height and width properties, that represent the new dimensions of this Venn Diagram. <br>
+                        <code>['height', 'left-width', 'center-width', 'right-width']</code>
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Change the color of section <code>sectionIndex</code> to <code>color</code> in Venn Diagram <code>vennNum</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>addImage(vennNum, sectionIndex, photoSrc)</code></td>
+                    <td>
+                        
+                        <code>vennNum</code>: the vennNumber of the Venn Diagram to be updated.<br>
+                        <code>sectionIndex</code>: the index of the section of the Venn Diagram to be updated where <code>0</code> represents the left section <br>
+                        <code>photoSrc</code>: a string that stores the link or path to a photo/image
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Add an image to section <code>sectionIndex</code> with <code>src photoSrc</code> in Venn Diagram <code>vennNum</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>changeImage(vennNum, sectionIndex, newPhoto)</code></td>
+                    <td>
+                        
+                        <code>vennNum</code>: the vennNumber of the Venn Diagram to be updated.<br>
+                        <code>sectionIndex</code>: the index of the section of the Venn Diagram to be updated where <code>0</code> represents the left section <br>
+                        <code>newPhoto</code>: a string that stores the link or path to a photo/image
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Change the <code>src</code> of the image of section <code>sectionIndex</code> to <code>photoSrc</code> in Venn Diagram <code>vennNum</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>removeImage(vennNum, sectionIndex)</code></td>
+                    <td>
+                        
+                        <code>vennNum</code>: the vennNumber of the Venn Diagram to be updated.<br>
+                        <code>sectionIndex</code>: the index of the section of the Venn Diagram to be updated where <code>0</code> represents the left section <br>
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Remove the image from section <code>sectionIndex</code> in Venn Diagram <code>vennNum</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>changeImageSize(vennNum, sectionIndex, newWidth, newHeight)</code></td>
+                    <td>
+                        
+                        <code>vennNum</code>: the vennNumber of the Venn Diagram to be updated.<br>
+                        <code>sectionIndex</code>: the index of the section of the Venn Diagram to be updated where <code>0</code> represents the left section <br>
+                        <code>newWidth</code>: a string storing a valid CSS width property which will be the new width of the image in this section <br>
+                        <code>newHeight</code> a string storing a valid CSS height property which will be the new height of the image in this section <br>
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Remove the image from section <code>sectionIndex</code> in Venn Diagram <code>vennNum</code>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+        <div class="section">
+            <h2>Price Card Generator:</h2>
+    
+            <h3>Constructor: </h3>
+            <p>Create an instance of the PriceCardGenerator using the <code>PriceCardGenerator()</code> constructor.</p>
+            
+            <h3>Required Object Specifications:</h3>
+            <p>
+                The PriceCardGenerator's <code>makeCard</code> function takes a JS object as an argument. The object represents the data to to be displayed 
+                in the Price Card. The first 3 fields of the object are the name, price and frequency of the product. Every other key in the object is a string 
+                that will appear in the price card and the value of the key is a boolean that indicates whether there will be a checkmark or an 'X' appearing beside the string.
+                Optionally, the object may include an 'img' key if an image is wanted in the price card.
+                The object format is defined below:
+            </p>
+            <h4>Object Structure:</h4>
+            <div class="code">
+                <pre>
+                    <code>
+        {
+            name: '' // A string representing the name of the product/service,
+            price: '' // A string representing the price of the product/service (include the currency symbol)
+            frequency: '' // A string representing the frequency of the payment for this produce/service. 
+                            (optional, if null no frequency will be displayed)
+            'Any string': // The key can be any string and will appear directly inside the price card. The value must be a boolean in which true 
+                             will be represented with a checkmark and false will be represented with an 'X'
+                        
+                          // Any number of user-defined keys can be included in the object.
+            // img: '' A string that stores the link or path to an image. (optional, if null no image will be included in the price card)
+        }
+                    </code>
+                </pre>
+            </div>
+            <h4>Example:</h4>
+            <div class="code">
+                <pre>
+                    <code>
+        {
+            name: 'Plan 3',
+            price: '$20',
+            frequency: null, 
+            'Lorem ipsum dolor sit amet apple Lorem ipsum dolor sit amet': true,
+            'Double': true,
+            'Triple': false,
+            'Power': true,
+            img: 'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg',
+        }
+                    </code>
+                </pre>
+            </div>
+            <h3>API Functions:</h3>
+            <table>
+                <tr>
+                    <th>Function</th>
+                    <th>Arguments</th>
+                    <th>Return Value</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>makeCard(info, container)</code></td>
+                    <td>
+                        <code>info</code>: the JS object that store the data to be represented by this Price Card.<br>
+                        <code>container</code>: a Node object to which this tree should be added (ex. div, span, body, etc)
+                    </td>
+                    <td>
+                        An integer representing the cardNumber of the newly created Price Card. <br>This number is used to dynamically change the Price Card with the rest of the API functions. 
+                    </td>
+                    <td>
+                        Create a new Price Card matrix based on the contents of <code>info</code> and append to <code>container.childNodes</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>changeName(cardNum, newName)</code></td>
+                    <td>
+                        <code>cardNum</code>: the cardNumber of the Price Card to be updated.<br>
+                        <code>newName</code>: a string representing the new name of the product/service.
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Change the name of the product/service to <code>newName</code> in Price Card <code>cardNum</code>.
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>changeColor(cardNum, newColor)</code></td>
+                    <td>
+                        <code>cardNum</code>: the cardNumber of the Price Card to be updated.<br>
+                        <code>newColor</code>: a string representing a valid CSS color value (hexcode, rgb, rgba) (ex. rgb(0,0,0))
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Change the color of Price Card <code>cardNumber</code> to <code>newColor</code>.
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>changePrice(cardNum, newPrice, newFrequency)</code></td>
+                    <td>
+                        <code>cardNum</code>: the cardNumber of the Price Card to be updated.<br>
+                        <code>newPrice</code>: a string representing the new price of the product/service (include the currency symbol) <br>
+                        <code>newFrequency</code>: A string representing the frequency of the payment for this produce/service. (optional, if null 
+                        no frequency will be displayed)
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Update the price of Price Card <code>cardNum</code> with <code>newPrice</code> and <code>newFrequency</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>insertField(cardNum, newField, value, fieldIndex)</code></td>
+                    <td>
+                        <code>cardNum</code>: the cardNumber of the Price Card to be updated.<br>
+                        <code>newField</code>: a string representing the new field to include in the Price Card <br>
+                        <code>value</code>: a boolean indicating whether to place a checkmark or an 'X' next to the <code>newField</code><br>
+                        <code>fieldIndex</code>: the index of the fields in the Price Card where the new field is to be inserted where 
+                        <code>0</code> is the index of the top-most field on the card.
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Insert a new field <code>newField</code> with value <code>value</code> in Price Card <code>cardNum</code> at index <code>fieldIndex</code>.
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>changeField(cardNum, newField, fieldIndex)</code></td>
+                    <td>
+                        <code>cardNum</code>: the cardNumber of the Price Card to be updated.<br>
+                        <code>newField</code>: a string representing the new field which will replace the old field in the Price Card <br>
+                        <code>fieldIndex</code>: the index of the fields in the Price Card of the field to be changed where 
+                        <code>0</code> is the index of the top-most field on the card.
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Change the text of the field at index <code>fieldIndex</code> with <code>newField</code> in Price Card <code>cardNum</code>.
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>changeValue(cardNum, fieldIndex, newValue)</code></td>
+                    <td>
+                        
+                        <code>cardNum</code>: the cardNumber of the Price Card to be updated.<br>
+                        <code>fieldIndex</code>: the index of the fields in the Price Card of the field whose value is to be changed where 
+                        <code>0</code> is the index of the top-most field on the card. <br>
+                        <code>newValue</code>: a boolean indicating whether to place a checkmark or an 'X' next to the field at <code>fieldIndex</code> <br>
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Change the value of the field at <code>fieldIndex</code> to <code>newValue</code> of Price Card <code>cardNum</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>addImage(cardNum, imgSrc)</code></td>
+                    <td>
+                        
+                        <code>cardNum</code>: the cardNumber of the Price Card to be updated.<br>
+                        <code>imgSrc</code>: a string that stores the link or path to a photo/image
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Add an image to Price Card <code>cardNum</code> with <code>src imgSrc</code>.
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>changeImage(cardNum, newImg)</code></td>
+                    <td>
+                        
+                        <code>cardNum</code>: the cardNumber of the Price Card to be updated.<br>
+                        <code>newImg</code>: a string that stores the link or path to a photo/image
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Change the <code>src</code> of the image of Price Card <code>cardNum</code> to <code>newImg</code>.
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>removeImage(cardNum)</code></td>
+                    <td>
+                        
+                        <code>cardNum</code>: the cardNumber of the Price Card to be updated.<br>
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Remove the image from Price Card <code>cardNum</code>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+        <div class="section">
+            <h2>Table Row Generator:</h2>
+            In the Table Row Generator, each product represents a row in the table.
+    
+            <h3>Constructor: </h3>
+            <p>Create an instance of the TableRowGenerator using the <code>TableRowGenerator()</code> constructor.</p>
+            
+            <h3>Required Object Specifications:</h3>
+            <p>
+                The TableRowGenerator's <code>makeTable</code> function takes an array of JS objects as an argument. Each object represents the data of a product 
+                to to be displayed as a row in the Table Matrix. The first 2 fields of each object are the name and price of the product. Every other key in the object is a string 
+                that will appear as a column header in the Table and the value of the key is either a boolean that indicates whether there will be a checkmark or an 'X' appearing in the cell for 
+                each category, or a regular string which will appear in the cell. Optionally, a 'text' field may be included in each object which represents the text
+                which would appear in a pop-up when a user hovers over the name of each product. 
+
+                The object format is defined below:
+            </p>
+            <p>NOTE: Each object in the array <strong>must</strong> have the exact same keys.</p> 
+            <h4>Object Structure:</h4>
+            <div class="code">
+                <pre>
+                    <code>
+        {
+            Name: ''        // A string representing the name of the product/service,
+            Price: ''       // A string representing the price of the product/service,
+            'Any String':   // The key is any string and will appear as a column header in the table matrix. The value can be either a boolean 
+                               which is represented by a checkmark or 'X', or a regular string. The value will appear in the respective cell for
+                               product.
+                            // An object can have any number of strings for the column headers.
+            text: ''        // A string representing the text to appear in a pop-up when a user hovers over this product's name 
+                               (optional, if null no pop-up appears)
+    
+        },
+                    </code>
+                </pre>
+            </div>
+            <h4>Example:</h4>
+            <div class="code">
+                <pre>
+                    <code>
+        [
+            {
+                Name: 'Product 1',
+                Price: '$25',
+                Bluetooth: true,
+                Wireless: false,
+                Fit: 'Customizable',
+                text: 'Lorum Ipmsum Dolor'
+        
+            },
+            {
+                Name: 'Product 2',
+                Price: '$30',
+                Bluetooth: false,
+                Wireless: false,
+                Fit: 'Fixed'
+            },
+            {
+                Name: 'Product 3',
+                Price: '$35',
+                Bluetooth: true,
+                Wireless: true,
+                Fit: 'N/A'
+            }
+        ]
+                    </code>
+                </pre>
+            </div>
+            <h3>API Functions:</h3>
+            <table>
+                <tr>
+                    <th>Function</th>
+                    <th>Arguments</th>
+                    <th>Return Value</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>makeTable(info, container)</code></td>
+                    <td>
+                        <code>info</code>: the JS array that store the data to be represented by this Table Row Matrix.<br>
+                        <code>container</code>: a Node object to which this tree should be added (ex. div, span, body, etc)
+                    </td>
+                    <td>
+                        An integer representing the tableNumber of the newly created Table Row Matrix. <br>This number is used to dynamically change the Table with the rest of the API functions. 
+                    </td>
+                    <td>
+                        Create a new Table Row matrix based on the contents of <code>info</code> and append to <code>container.childNodes</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>appendProduct(tableNum, productInfo)</code></td>
+                    <td>
+                        <code>tableNum</code>: the tableNumber of the Table Row Matrix to be updated.<br>
+                        <code>productInfo</code>: A JS object that satisfies the constraints of the Table Row Matrix defined above. This object must
+                        have the same exact fields as the rest of the objects in this Table.
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Append a new row to Table Row Matrix <code>tableNum</code> representing the product information of <code>productInfo</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>insertProduct(tableNum, productInfo, rowNum)</code></td>
+                    <td>
+                        <code>tableNum</code>: the tableNumber of the Table Row Matrix to be updated.<br>
+                        <code>productInfo</code>: A JS object that satisfies the constraints of the Table Row Matrix defined above. This object must
+                        have the same exact fields as the rest of the objects in this Table. <br>
+                        <code>rowNum</code>: the row number of the table where the new product is to be inserted, where <code>0</code> represents the 
+                        header row.
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Insert a new row to Table Row Matrix <code>tableNum</code> at row <code>rowNum</code> representing the product information of <code>productInfo</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>removeProduct(tableNum, rowNum)</code></td>
+                    <td>
+                        <code>tableNum</code>: the tableNumber of the Table Row Matrix to be updated.<br>
+                        <code>rowNum</code>: the row number of the product to delete, where <code>0</code> represents the 
+                        header row.
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Delete row <code>rowNum</code> from TableRowMatrix <code>tableNum</code>.
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>addHeader(tableNum, newHeaderInfo)</code></td>
+                    <td>
+                        <code>tableNum</code>: the tableNumber of the Table Row Matrix to be updated.<br>
+                        <code>newHeaderInfo</code>: an array in which the first element is a string representing the new column header
+                        and each subsequent element is the value of this header for each product in the table. The length of this array 
+                        must be exactly the number of rows in the table (including the header row).<br>
+                        newHeaderInfo = ['header', 'value1', 'value2', ...]
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Create a new column in table <code>tableNum</code> populated with the contents of <code>newHeaderInfo</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>changeHeader(tableNum, newHeader, oldHeaderIndex)</code></td>
+                    <td>
+                        <code>tableNum</code>: the tableNumber of the Table Row Matrix to be updated.<br>
+                        <code>newHeader</code>: a string representing the text of the new column header <br>
+                        <code>oldHeaderIndex</code>: the index of the column to change where <code>0</code> is the left-most column.
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Change the header of column <code>oldHeaderIndex</code> with <code>newHeader</code> in table <code>tableNum</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>changeCellInfo(tableNum, row, col, newValue)</code></td>
+                    <td>
+                        <code>tableNum</code>: the tableNumber of the Table Row Matrix to be updated.<br>
+                        <code>row</code>: the index of the row in which the cell to update is located in. <br>
+                        <code>col</code>: the index of the column in which the cell to update is located in. <br>
+                        <code>newValue</code>: either a boolean or a string representing the new value to be placed in the cell.
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Change the value of cell with coordinates <br>(<code>row</code>, <code>col</code>) with <code>newValue</code> in table <code>tableNum</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>changeCellColor(tableNum, row, col, color)</code></td>
+                    <td>
+                        <code>tableNum</code>: the tableNumber of the Table Row Matrix to be updated.<br>
+                        <code>row</code>: the index of the row in which the cell to update is located in. <br>
+                        <code>col</code>: the index of the column in which the cell to update is located in. <br>
+                        <code>color</code>: a string representing a valid CSS color value (hexcode, rgb, rgba) (ex. rgb(0,0,0))
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Change the color of cell with coordinates <br>(<code>row</code>, <code>col</code>) to <code>color</code> in table <code>tableNum</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>changeTableWidth(tableNum, newWidth)</code></td>
+                    <td>
+                        <code>tableNum</code>: the tableNumber of the Table Row Matrix to be updated.<br>
+                        <code>newWidth</code>: a string containing a valid CSS width property
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Change the width of table <code>tableNum</code> to <code>newWidth</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>addProductDescription(tableNum, row, description)</code></td>
+                    <td>
+                        <code>tableNum</code>: the tableNumber of the Table Row Matrix to be updated.<br>
+                        <code>row</code>: the row number of the product to add a description to<br>
+                        <code>description</code>: a string that represents the text that will appear in the pop-up when a user 
+                        hovers over this product's name
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Add a pop-up that will contain <code>description</code> to the product at row <code>row</code> in table <code>tableNum</code>. 
+                        This pop-up will appear when a user hovers over this product's name.
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>changeProductDescription(tableNum, row, newDescription)</code></td>
+                    <td>
+                        <code>tableNum</code>: the tableNumber of the Table Row Matrix to be updated.<br>
+                        <code>row</code>: the row number of the product whose description is to be updated<br>
+                        <code>newDescription</code>: a string that represents the new text that will appear in the pop-up when a user 
+                        hovers over this product's name
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Update the pop-up text of the product at row <code>row</code> with <code>newDescription</code> in table <code>tableNum</code>.
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>removeProductDescription(tableNum, row)</code></td>
+                    <td>
+                        <code>tableNum</code>: the tableNumber of the Table Row Matrix to be updated.<br>
+                        <code>row</code>: the row number of the product whose description is to be removed.<br>
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Remove the pop-up text from the product at row <code>row</code> in table <code>tableNum</code>.
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>addImage(tableNum, row, img)</code></td>
+                    <td>
+                        
+                        <code>tableNum</code>: the tableNumber of the Table Row Matrix to be updated.<br>
+                        <code>row</code>: the row number of the product to add an image to.<br>
+                        <code>img</code>: a string that stores the link or path to a photo/image
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Add an image to the name cell of the product at row <code>row</code> with <code>src img</code>, in table <code>tableNum</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>changeImage(tableNum, row, img)</code></td>
+                    <td>
+                        
+                        <code>tableNum</code>: the tableNumber of the Table Row Matrix to be updated.<br>
+                        <code>row</code>: the row number of the product whose image is to be updated.<br>
+                        <code>img</code>: a string that stores the link or path to a photo/image
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Change the image of the product at row <code>row</code> with <code>src img</code>, in table <code>tableNum</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>removeImage(tableNum, row)</code></td>
+                    <td>
+                        
+                        <code>tableNum</code>: the tableNumber of the Table Row Matrix to be updated.<br>
+                        <code>row</code>: the row number of the product whose image is to be removed.<br>
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Remove the image of the product at row <code>row</code> in table <code>tableNum</code>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+        <div class="section">
+            <h2>Table Column Generator:</h2>
+            In the Table Column Generator, each product represents a column in the table.
+    
+            <h3>Constructor: </h3>
+            <p>Create an instance of the TableColumnGenerator using the <code>TableColumnGenerator()</code> constructor.</p>
+            
+            <h3>Required Object Specifications:</h3>
+            <p>The Object Requirements of the the TableColumnGenerator is identical to those of the TableRowGenerator</p>
+            <p>
+                The TableColumnGenerator's <code>makeTable</code> function takes an array of JS objects as an argument. Each object represents the data of a product 
+                to to be displayed as a column in the Table Matrix. The first 2 fields of each object are the name and price of the product. Every other key in the object is a string 
+                that will appear as a row header in the Table and the value of the key is either a boolean that indicates whether there will be a checkmark or an 'X' appearing in the cell for 
+                each category, or a regular string which will appear in the cell. Optionally, a 'text' field may be included in each object which represents the text
+                which would appear in a pop-up when a user hovers over the name of each product. 
+
+                The object format is defined below:
+            </p>
+            <p>NOTE: Each object in the array <strong>must</strong> have the exact same keys.</p> 
+            <h4>Object Structure:</h4>
+            <div class="code">
+                <pre>
+                    <code>
+        {
+            Name: ''        // A string representing the name of the product/service,
+            Price: ''       // A string representing the price of the product/service,
+            'Any String':   // The key is any string and will appear as a row header in the table matrix. The value can be either a boolean 
+                               which is represented by a checkmark or 'X', or a regular string. The value will appear in the respective cell for
+                               product.
+                            // An object can have any number of strings for the row headers.
+            text: ''        // A string representing the text to appear in a pop-up when a user hovers over this product's name 
+                               (optional, if null no pop-up appears)
+    
+        },
+                    </code>
+                </pre>
+            </div>
+            <h4>Example:</h4>
+            <div class="code">
+                <pre>
+                    <code>
+        [
+            {
+                Name: 'Product 1',
+                Price: '$25',
+                Bluetooth: true,
+                Wireless: false,
+                Fit: 'Customizable',
+                text: 'Lorum Ipmsum Dolor'
+        
+            },
+            {
+                Name: 'Product 2',
+                Price: '$30',
+                Bluetooth: false,
+                Wireless: false,
+                Fit: 'Fixed'
+            },
+            {
+                Name: 'Product 3',
+                Price: '$35',
+                Bluetooth: true,
+                Wireless: true,
+                Fit: 'N/A'
+            }
+        ]
+                    </code>
+                </pre>
+            </div>
+            <h3>API Functions:</h3>
+            <table>
+                <tr>
+                    <th>Function</th>
+                    <th>Arguments</th>
+                    <th>Return Value</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>makeTable(info, container)</code></td>
+                    <td>
+                        <code>info</code>: the JS array that store the data to be represented by this Table Column Matrix.<br>
+                        <code>container</code>: a Node object to which this tree should be added (ex. div, span, body, etc)
+                    </td>
+                    <td>
+                        An integer representing the tableNumber of the newly created Table Colunn Matrix. <br>This number is used to dynamically change the Table with the rest of the API functions. 
+                    </td>
+                    <td>
+                        Create a new Table Column matrix based on the contents of <code>info</code> and append to <code>container.childNodes</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>appendProduct(tableNum, productInfo)</code></td>
+                    <td>
+                        <code>tableNum</code>: the tableNumber of the Table Column Matrix to be updated.<br>
+                        <code>productInfo</code>: A JS object that satisfies the constraints of the Table Column Matrix defined above. This object must
+                        have the same exact fields as the rest of the objects in this Table.
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Append a new column to Table Column Matrix <code>tableNum</code> representing the product information of <code>productInfo</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>insertProduct(tableNum, productInfo, colNum)</code></td>
+                    <td>
+                        <code>tableNum</code>: the tableNumber of the Table Row Matrix to be updated.<br>
+                        <code>productInfo</code>: A JS object that satisfies the constraints of the Table Column Matrix defined above. This object must
+                        have the same exact fields as the rest of the objects in this Table. <br>
+                        <code>rowNum</code>: the column number of the table where the new product is to be inserted, where <code>0</code> represents the 
+                        header column.
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Insert a new column in the Table Column Matrix <code>tableNum</code> at column <code>colNum</code> representing the product information of <code>productInfo</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>removeProduct(tableNum, colNum)</code></td>
+                    <td>
+                        <code>tableNum</code>: the tableNumber of the Table Column Matrix to be updated.<br>
+                        <code>rowNum</code>: the column number of the product to delete, where <code>0</code> represents the 
+                        header column.
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Delete column <code>colNum</code> from TableColumnMatrix <code>tableNum</code>.
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>addHeader(tableNum, newHeaderInfo)</code></td>
+                    <td>
+                        <code>tableNum</code>: the tableNumber of the Table Row Matrix to be updated.<br>
+                        <code>newHeaderInfo</code>: an array in which the first element is a string representing the new row header
+                        and each subsequent element is the value of this header for each product in the table. The length of this array 
+                        must be exactly the number of columns in the table (including the header column).<br>
+                        newHeaderInfo = ['header', 'value1', 'value2', ...]
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Create a new row in table <code>tableNum</code> populated with the contents of <code>newHeaderInfo</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>changeHeader(tableNum, newHeader, oldHeaderIndex)</code></td>
+                    <td>
+                        <code>tableNum</code>: the tableNumber of the Table Column Matrix to be updated.<br>
+                        <code>newHeader</code>: a string representing the text of the new row header <br>
+                        <code>oldHeaderIndex</code>: the index of the row to change where <code>0</code> is the top-most row.
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Change the header of row <code>oldHeaderIndex</code> with <code>newHeader</code> in table <code>tableNum</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>changeCellInfo(tableNum, row, col, newValue)</code></td>
+                    <td>
+                        <code>tableNum</code>: the tableNumber of the Table Column Matrix to be updated.<br>
+                        <code>row</code>: the index of the row in which the cell to update is located in. <br>
+                        <code>col</code>: the index of the column in which the cell to update is located in. <br>
+                        <code>newValue</code>: either a boolean or a string representing the new value to be placed in the cell.
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Change the value of cell with coordinates <br>(<code>row</code>, <code>col</code>) with <code>newValue</code> in table <code>tableNum</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>changeCellColor(tableNum, row, col, color)</code></td>
+                    <td>
+                        <code>tableNum</code>: the tableNumber of the Table Column Matrix to be updated.<br>
+                        <code>row</code>: the index of the row in which the cell to update is located in. <br>
+                        <code>col</code>: the index of the column in which the cell to update is located in. <br>
+                        <code>color</code>: a string representing a valid CSS color value (hexcode, rgb, rgba) (ex. rgb(0,0,0))
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Change the color of cell with coordinates <br>(<code>row</code>, <code>col</code>) to <code>color</code> in table <code>tableNum</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>changeTableWidth(tableNum, newWidth)</code></td>
+                    <td>
+                        <code>tableNum</code>: the tableNumber of the Table Column Matrix to be updated.<br>
+                        <code>newWidth</code>: a string containing a valid CSS width property
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Change the width of table <code>tableNum</code> to <code>newWidth</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>addProductDescription(tableNum, col, description)</code></td>
+                    <td>
+                        <code>tableNum</code>: the tableNumber of the Table Column Matrix to be updated.<br>
+                        <code>col</code>: the column number of the product to add a description to<br>
+                        <code>description</code>: a string that represents the text that will appear in the pop-up when a user 
+                        hovers over this product's name
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Add a pop-up that will contain <code>description</code> to the product at column <code>col</code> in table <code>tableNum</code>. 
+                        This pop-up will appear when a user hovers over this product's name.
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>changeProductDescription(tableNum, col, newDescription)</code></td>
+                    <td>
+                        <code>tableNum</code>: the tableNumber of the Table Column Matrix to be updated.<br>
+                        <code>col</code>: the column number of the product whose description is to be updated<br>
+                        <code>newDescription</code>: a string that represents the new text that will appear in the pop-up when a user 
+                        hovers over this product's name
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Update the pop-up text of the product at column <code>col</code> with <code>newDescription</code> in table <code>tableNum</code>.
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>removeProductDescription(tableNum, col)</code></td>
+                    <td>
+                        <code>tableNum</code>: the tableNumber of the Table Column Matrix to be updated.<br>
+                        <code>col</code>: the column number of the product whose description is to be removed.<br>
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Remove the pop-up text from the product at column <code>col</code> in table <code>tableNum</code>.
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>addImage(tableNum, col, img)</code></td>
+                    <td>
+                        
+                        <code>tableNum</code>: the tableNumber of the Table Column Matrix to be updated.<br>
+                        <code>col</code>: the column number of the product to add an image to.<br>
+                        <code>img</code>: a string that stores the link or path to a photo/image
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Add an image to the name cell of the product at column <code>col</code> with <code>src img</code>, in table <code>tableNum</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>changeImage(tableNum, col, img)</code></td>
+                    <td>
+                        
+                        <code>tableNum</code>: the tableNumber of the Table Row Matrix to be updated.<br>
+                        <code>col</code>: the column number of the product whose image is to be updated.<br>
+                        <code>img</code>: a string that stores the link or path to a photo/image
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Change the image of the product at column <code>col</code> with <code>src img</code>, in table <code>tableNum</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>removeImage(tableNum, col)</code></td>
+                    <td>
+                        
+                        <code>tableNum</code>: the tableNumber of the Table Row Matrix to be updated.<br>
+                        <code>col</code>: the column number of the product whose image is to be removed.<br>
+                    </td>
+                    <td>
+                        N/A 
+                    </td>
+                    <td>
+                        Remove the image of the product at column <code>col</code> in table <code>tableNum</code>
+                    </td>
+                </tr>
+
+
+            </table>
+        </div>
+    </div>
+</div>
+
+
+    
+</body>

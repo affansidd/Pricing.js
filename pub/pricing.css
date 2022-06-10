@@ -1,0 +1,370 @@
+/*tree*/
+.tree ul {
+	padding-top: 20px; 
+    position: relative;
+}
+
+.tree li {
+	float: left; 
+    text-align: center;
+	list-style-type: none;
+	position: relative;
+	padding: 25px 10px 0 10px;	
+}
+
+/* draw the branches of the tree*/
+
+.tree li::before, .tree li::after{
+	content: '';
+	position: absolute; 
+	top: 0; 
+	right: 50%;
+	width: 70%; 
+	height: 15px;
+	border-top: 7px solid #000;
+}
+
+.tree li::after{
+	left: 50%;
+	border-left: 7px solid #000;
+}
+
+/*Remove extra branching from nodes without siblings*/
+.tree li:only-child::after, .tree li:only-child::before {
+	display: none;
+}
+
+/*Get rid of extra branching from first and last nodes*/
+.tree li:first-child::before, .tree li:last-child::after{
+	border: none;
+}
+/*Adding back the vertical connector to the last nodes*/
+.tree li:last-child::before{
+	border-right: 7px solid #000;
+}
+
+/*Draw branch connecting parent to children branches*/
+.tree ul ul::before{
+	content: '';
+	position: absolute; 
+	top: 0; 
+	left: 50%;
+	width: 0px; 
+	height: 25px;
+	border-left: 7px solid #000;
+}
+
+.tree li p{
+	margin: 0;
+	border: 7px solid #000;
+	padding: 5px 10px;
+	font-family: arial, verdana, tahoma;
+	font-size: 20px;
+	display: inline-block;
+	background-color: rgba(50, 143, 168, 0.7);
+	border-radius: 15px;
+}
+
+
+/* Popup container */
+.item {
+	position: relative;
+	cursor: pointer;
+}
+  
+/* popup */
+.item .itemtext {
+	visibility: hidden;
+	border-radius: 10px;
+	position: absolute;
+	min-width: 200px;
+	bottom: 102%;
+	left: 50%;
+	margin-left: -115px;
+	padding: 12px;
+	z-index: 1; /*used to make the popup appear on top of the node*/
+	background-color: rgb(32, 30, 30);
+	color: #fff;
+	text-align: center;
+	font-family: arial, verdana, tahoma;
+}
+
+
+/* popup arrow */
+.item .itemtext::after {
+	content: "";
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	border-width: 5px;
+	border-style: solid;
+	border-color: rgb(32, 30, 30) transparent transparent transparent;
+}
+
+/* Display class to be toggled on and off to view popup*/
+.item .display {
+	visibility: visible;
+}
+
+
+/*pryamid*/
+
+.pyramid_container {
+	text-align: center;
+	font-family: arial, verdana, tahoma;
+	padding: 25px;
+}
+
+.pyramid_text_top {
+	position: relative;
+	top: 40px;
+	display: inline-block;
+}
+
+.pyramid_text {
+	position: relative;
+	top: 10px;
+	display: inline-block;
+}
+
+.pyramid_section_3 {
+	display: flex;
+	justify-content: center;
+	align-items: baseline;
+	border-bottom: 100px solid;
+	border-left: 100px solid transparent;
+	border-right: 100px solid transparent;
+	height: 0;
+	width: 0px;
+	margin-right:auto;
+	margin-left:auto;
+}
+
+.pyramid_section_2 {
+	display: flex;
+	justify-content: center;
+	align-items:baseline;
+	border-bottom: 75px solid;
+	border-left: 75px solid transparent;
+	border-right: 75px solid transparent;
+	height: 0;
+	width: 200px;
+	margin-right:auto;
+	margin-left:auto;
+}
+
+.pyramid_section_1 {
+	display: flex;
+	justify-content: center;
+	align-items: baseline;
+	position: relative;
+	border-bottom: 75px solid;
+	border-left: 75px solid transparent;
+	border-right: 75px solid transparent;
+	height: 0;
+	width: 350px;
+	margin-right:auto;
+	margin-left:auto;
+}
+
+.pyramid_section_0 {
+	display: flex;
+	justify-content: center;
+	align-items: baseline;
+	position: relative;
+	border-bottom: 75px solid;
+	border-left: 75px solid transparent;
+	border-right: 75px solid transparent;
+	height: 0;
+	width: 500px;
+	margin-right:auto;
+	margin-left:auto;
+}
+
+/*learned about the binary tree formatting from: https://www.youtube.com/watch?v=bO6yRZCPk3w */
+.venn-container {
+	display: flex;
+	row-gap: 0;
+	font-family: arial, verdana, tahoma;
+	justify-content: center;
+	margin: 10px
+}
+.left {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 300px;
+	height: 400px;
+	border-style: solid dashed solid solid;
+	border-width: 5px;
+	overflow: scroll;
+	border-bottom-left-radius: 70px;
+	border-top-left-radius: 70px;
+	background-color: rgba(50, 143, 168, 0.7);
+}
+
+.left img {
+	width: 80%;
+	height: 80%;
+}
+
+.right {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 300px;
+	height: 400px;
+	border-style: solid solid solid dashed;
+	border-width: 5px;
+	overflow: scroll;
+	border-bottom-right-radius: 70px;
+	border-top-right-radius: 70px;
+	background-color: rgba(214, 139, 54, 0.7);
+}
+
+.right img {
+	width: 80%;
+	height: 80%;
+}
+
+.center {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 250px;
+	height: 400px;
+	border: solid;
+	border-width: 5px 0;
+	overflow: scroll;
+	background-color: rgba(172, 85, 194, 0.7);
+}
+
+.center img {
+	width: 80%;
+	height: 80%;
+}
+
+.product-header {
+	margin-bottom: 5px;
+}
+.description {
+	padding: 10px;
+	margin: 0;
+	/* font-size: 90%; */
+}
+.venn-container ul {
+	align-self: baseline;
+}
+
+.venn-container li {
+	padding: 5px
+}
+
+
+
+/*---Table CSS---*/
+
+.table {
+  font-family: arial, verdana, tahoma;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+
+
+.table_contents td, th {
+  border: 1px solid #000;
+  text-align: center;
+  padding: 8px;
+}
+
+/* .table tr:nth-child(even) {
+  background-color: #dddddd;
+} */
+
+.table tr:nth-child(odd) {
+	background-color: rgba(31, 133, 133, 0.568);
+  }
+
+.img_ctn {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.img_ctn img {
+	max-width: 300px;
+	max-height: 300px;
+
+}
+
+/*---Price Card CSS---*/
+
+
+.priceCard {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	width: 350px;
+	min-height: 400px;
+	background-image: linear-gradient(45deg, rgba(255,0,0,0), rgba(50, 143, 168, 0.7));
+	box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+	border-radius: 15px;
+	font-family: sans-serif;
+	margin: 10px
+}
+
+.priceCard h1 {
+	margin: 0;
+	padding-left: 15px;
+	padding-top: 20px;
+	padding-bottom: 15px;
+	padding-right: 15px;
+	text-align: center;
+	color: black;
+}
+
+.details ul{
+	width: 100%;
+	height: 100%;
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	padding-left: 10px;
+}
+
+.details ul li {
+	font-size: 20px;
+	display: flex;
+	align-items: center;
+	padding: 5px;
+}
+
+.details img {
+	display: block;
+	width: 30px;
+}
+
+.priceCard p {
+	font-size: 14px;
+	padding-left: 15px;
+	padding-bottom: 20px;
+}
+
+.priceCard span {
+	font-size: 45px;
+	font-weight: bold;
+}
+
+.product_img_ctn {
+	display: flex;
+	justify-content: center;
+}
+
+.product_img_ctn img {
+	max-width:80%;
+	min-width: 50%;
+	max-height: 80%;
+	min-height: 50%;
+}
